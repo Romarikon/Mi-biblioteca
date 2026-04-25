@@ -1,0 +1,18 @@
+{
+  "name": "Mi Biblioteca",
+  "short_name": "Biblioteca",
+  "description": "Tu biblioteca personal siempre contigo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2ece0",
+  "theme_color": "#3b4999",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -13,6 +13,7 @@ function extractBook(doc) {
     synopsis:  '',
     cover_url: doc.cover_i ? OL_COVER(doc.cover_i, 'L') : '',
     pages:     doc.number_of_pages_median || 0,
+    _key:      doc.key || '',
   }
 }
 
@@ -66,7 +67,7 @@ export default function BookForm({ book, userId, onClose, onSave }) {
     setResults([])
     try {
       const q = encodeURIComponent(query)
-      const res = await fetch(`${OL_SEARCH}?q=${q}&limit=20&fields=title,author_name,cover_i,number_of_pages_median,subject`)
+      const res = await fetch(`${OL_SEARCH}?q=${q}&limit=20&fields=title,author_name,cover_i,number_of_pages_median,subject,key`)
       const data = await res.json()
       setResults((data.docs || []).map(extractBook).filter(b => b.title))
     } catch {
@@ -75,18 +76,30 @@ export default function BookForm({ book, userId, onClose, onSave }) {
     setSearching(false)
   }
 
-  function selectResult(result) {
+  async function selectResult(result) {
     setForm(prev => ({
       ...prev,
-      title: result.title,
-      author: result.author,
-      category: result.category,
-      synopsis: result.synopsis,
+      title:     result.title,
+      author:    result.author,
+      category:  result.category,
+      synopsis:  '',
       cover_url: result.cover_url,
+      pages:     result.pages || prev.pages,
     }))
     setSelected(true)
     setResults([])
     setQuery(result.title)
+
+    if (result._key) {
+      try {
+        const res = await fetch(`https://openlibrary.org${result._key}.json`)
+        const data = await res.json()
+        const synopsis = typeof data.description === 'string'
+          ? data.description
+          : data.description?.value || ''
+        if (synopsis) setForm(prev => ({ ...prev, synopsis }))
+      } catch {}
+    }
   }
 
   async function handleSubmit(e) {

@@ -1,15 +1,17 @@
-export const APP_VERSION = '1.6'
+export const APP_VERSION = '1.7'
 
 const RELEASES = [
   {
-    version: '1.6',
+    version: '1.7',
     date: 'Abril 2025',
     changes: [
+      'Migración a Open Library API — sin límite de cuota diaria',
+      'Sinopsis automática al seleccionar un libro',
       'Buscador visual de portadas — elige entre varias ediciones con un toque',
+      'Logo SVG propio e historial de versiones',
       'Ordenación por nombre (A–Z) y fecha de lectura en cada sección',
       'Login automático — el email se guarda, solo haces clic en el link',
       'Sesión persistente entre visitas y en iPhone',
-      'Corrección del contador del reto lector al añadir libros como leídos',
     ],
   },
   {

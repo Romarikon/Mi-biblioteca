@@ -136,9 +136,21 @@ body {
   margin-bottom: 1.75rem;
 }
 .header-left { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+
+.app-brand { display: flex; align-items: center; gap: 0.7rem; }
+.app-logo { width: 36px; height: 36px; flex-shrink: 0; border-radius: 9px; box-shadow: var(--sh-sm); }
+.app-brand-text { display: flex; flex-direction: column; gap: 1px; }
 .library-header h1 {
-  font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px;
+  font-size: 1.35rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1;
 }
+.app-version {
+  font-size: 0.65rem; font-weight: 700; color: var(--text-light);
+  background: none; border: none; cursor: pointer; padding: 0;
+  font-family: inherit; letter-spacing: 0.05em;
+  transition: color var(--trans);
+  text-align: left;
+}
+.app-version:hover { color: var(--accent); }
 .header-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 
 .search {
@@ -1189,6 +1201,49 @@ body {
 }
 .btn-lent-clear:hover { background: #ffedd5; }
 [data-theme="dark"] .btn-lent-clear { border-color: #5c3010; color: #fb923c; }
+
+
+/* ══════════════════════════════════════════
+   CHANGELOG
+══════════════════════════════════════════ */
+.changelog-modal { max-width: 480px; }
+.changelog-list {
+  display: flex; flex-direction: column; gap: 0;
+  max-height: 65vh; overflow-y: auto;
+  margin: 0 -2rem; padding: 0 2rem;
+}
+.changelog-release {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.changelog-release:last-child { border-bottom: none; }
+.changelog-release-header {
+  display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;
+}
+.changelog-version {
+  font-size: 0.88rem; font-weight: 800; color: var(--text);
+  letter-spacing: -0.2px;
+}
+.changelog-latest {
+  font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; background: var(--have-bg); color: var(--have);
+  border: 1px solid var(--have-border); border-radius: 10px;
+  padding: 1px 7px;
+}
+.changelog-date {
+  font-size: 0.75rem; color: var(--text-light); margin-left: auto;
+}
+.changelog-changes {
+  list-style: none; display: flex; flex-direction: column; gap: 0.4rem;
+}
+.changelog-changes li {
+  font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;
+  padding-left: 1.1rem; position: relative;
+}
+.changelog-changes li::before {
+  content: '·'; position: absolute; left: 0;
+  color: var(--accent); font-weight: 900; font-size: 1rem;
+}
 
 
 /* ══════════════════════════════════════════

@@ -12,6 +12,7 @@ import StatsBar from '../components/StatsBar'
 import DailyQuote from '../components/DailyQuote'
 import ReadingGoal from '../components/ReadingGoal'
 import OnboardingTour from '../components/OnboardingTour'
+import Changelog, { APP_VERSION } from '../components/Changelog'
 import { useDarkMode } from '../hooks/useDarkMode'
 
 // ── Draggable wrapper ────────────────────────────────────────
@@ -115,6 +116,7 @@ export default function Library({ session, onOpenBook }) {
   const [activeBook, setActiveBook] = useState(null)
   const [dark, setDark] = useDarkMode()
   const [showTour, setShowTour] = useState(() => !localStorage.getItem('tour_done'))
+  const [showChangelog, setShowChangelog] = useState(false)
   const [sortOthers, setSortOthers] = useState('default') // 'default' | 'alpha'
   const [sortRead, setSortRead] = useState('default')     // 'default' | 'alpha' | 'date'
 
@@ -219,7 +221,24 @@ export default function Library({ session, onOpenBook }) {
       <div className="library">
         <header className="library-header">
           <div className="header-left">
-            <h1>📚 Mi Biblioteca</h1>
+            <div className="app-brand">
+              <svg className="app-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="36" height="36" rx="9" fill="var(--accent)"/>
+                <rect x="7" y="7" width="9" height="22" rx="2" fill="white" opacity="0.25"/>
+                <rect x="9" y="7" width="9" height="22" rx="2" fill="white" opacity="0.4"/>
+                <rect x="11" y="7" width="14" height="22" rx="2" fill="white"/>
+                <rect x="14" y="12" width="8" height="1.5" rx="0.75" fill="var(--accent)" opacity="0.4"/>
+                <rect x="14" y="15.5" width="6" height="1.5" rx="0.75" fill="var(--accent)" opacity="0.3"/>
+                <rect x="14" y="19" width="7" height="1.5" rx="0.75" fill="var(--accent)" opacity="0.3"/>
+                <rect x="7" y="27" width="3" height="2" rx="1" fill="white" opacity="0.5"/>
+              </svg>
+              <div className="app-brand-text">
+                <h1>Mi Biblioteca</h1>
+                <button className="app-version" onClick={() => setShowChangelog(true)}>
+                  v{APP_VERSION}
+                </button>
+              </div>
+            </div>
             <ReadingGoal booksReadThisYear={booksReadThisYear} />
           </div>
           <div className="header-actions">
@@ -325,6 +344,7 @@ export default function Library({ session, onOpenBook }) {
     </DndContext>
 
     {showTour && <OnboardingTour onClose={() => setShowTour(false)} />}
+    {showChangelog && <Changelog onClose={() => setShowChangelog(false)} />}
     </>
   )
 }

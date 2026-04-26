@@ -41,6 +41,28 @@ export default function BookForm({ book, userId, onClose, onSave }) {
     pages: book?.pages || 0,
   })
   const [saving, setSaving] = useState(false)
+  const [coverResults, setCoverResults] = useState([])
+  const [searchingCovers, setSearchingCovers] = useState(false)
+
+  async function searchCovers() {
+    if (!form.title.trim()) return
+    setSearchingCovers(true)
+    setCoverResults([])
+    try {
+      const q = encodeURIComponent(`${form.title} ${form.author}`.trim())
+      const res = await fetch(`${GOOGLE_BOOKS_URL}?q=${q}&maxResults=12`)
+      const data = await res.json()
+      const covers = (data.items || [])
+        .map(item => {
+          const links = item.volumeInfo?.imageLinks || {}
+          return cleanCover(links.thumbnail || links.smallThumbnail || '')
+        })
+        .filter(Boolean)
+        .filter((url, i, arr) => arr.indexOf(url) === i) // dedup
+      setCoverResults(covers)
+    } catch {}
+    setSearchingCovers(false)
+  }
 
   function set(field, value) {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -155,12 +177,29 @@ export default function BookForm({ book, userId, onClose, onSave }) {
                 ? <img src={form.cover_url} alt="Portada" className="form-cover-preview" />
                 : <div className="form-cover-empty">📚</div>
               }
-              <input
-                className="cover-url-input"
-                placeholder="URL portada"
-                value={form.cover_url}
-                onChange={e => set('cover_url', e.target.value)}
-              />
+              <button
+                type="button"
+                className="btn-cover-search"
+                onClick={searchCovers}
+                disabled={searchingCovers || !form.title}
+                title="Buscar portada automáticamente"
+              >
+                {searchingCovers ? '...' : '🔍 Portada'}
+              </button>
+
+              {coverResults.length > 0 && (
+                <div className="cover-picker">
+                  {coverResults.map((url, i) => (
+                    <img
+                      key={i}
+                      src={url}
+                      alt="opción"
+                      className={`cover-option ${form.cover_url === url ? 'selected' : ''}`}
+                      onClick={() => { set('cover_url', url); setCoverResults([]) }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="form-fields-col">

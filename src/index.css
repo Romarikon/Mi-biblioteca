@@ -478,6 +478,7 @@ body {
 
 .form-cover-col {
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem; flex-shrink: 0;
+  position: relative;
 }
 .form-cover-preview {
   width: 88px; height: 128px; object-fit: cover;
@@ -495,6 +496,33 @@ body {
   text-align: center; outline: none; color: var(--text-muted); font-family: inherit;
   background: var(--surface-2);
 }
+.btn-cover-search {
+  width: 88px; font-size: 0.72rem; font-weight: 600; font-family: inherit;
+  background: var(--accent-soft); border: 1.5px solid var(--accent);
+  color: var(--accent); border-radius: var(--r-xs); padding: 0.32rem 0.4rem;
+  cursor: pointer; transition: background var(--trans), transform var(--trans);
+  white-space: nowrap;
+}
+.btn-cover-search:hover { background: var(--accent); color: white; transform: translateY(-1px); }
+.btn-cover-search:disabled { opacity: 0.45; cursor: default; transform: none; }
+
+.cover-picker {
+  position: absolute; left: 0; top: 100%;
+  display: grid; grid-template-columns: repeat(3, 56px);
+  gap: 5px; padding: 0.6rem;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r); box-shadow: var(--sh-lg);
+  z-index: 50; margin-top: 4px;
+  max-height: 260px; overflow-y: auto;
+}
+.cover-option {
+  width: 56px; height: 80px; object-fit: cover;
+  border-radius: 4px; cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform var(--trans), border-color var(--trans), box-shadow var(--trans);
+}
+.cover-option:hover { transform: scale(1.08); box-shadow: var(--sh); }
+.cover-option.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 
 .form-fields-col { flex: 1; display: flex; flex-direction: column; }
 .form-fields-col label {

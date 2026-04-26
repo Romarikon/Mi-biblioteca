@@ -78,10 +78,15 @@ export default function BookForm({ book, userId, onClose, onSave }) {
   async function handleSubmit(e) {
     e.preventDefault()
     setSaving(true)
-    const payload = { ...form, user_id: userId }
+    const now = new Date().toISOString()
     if (isEdit) {
-      await supabase.from('books').update(form).eq('id', book.id)
+      const fields = { ...form }
+      if (fields.status === 'read' && !book.finished_at) fields.finished_at = now
+      if (fields.status !== 'read') fields.finished_at = null
+      await supabase.from('books').update(fields).eq('id', book.id)
     } else {
+      const payload = { ...form, user_id: userId }
+      if (payload.status === 'read') payload.finished_at = now
       await supabase.from('books').insert(payload)
     }
     setSaving(false)

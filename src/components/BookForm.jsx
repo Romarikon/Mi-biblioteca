@@ -2,22 +2,17 @@ import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import StarRating from './StarRating'
 
-const GOOGLE_BOOKS_URL = 'https://www.googleapis.com/books/v1/volumes'
+const OL_SEARCH = 'https://openlibrary.org/search.json'
+const OL_COVER  = (id, size = 'M') => `https://covers.openlibrary.org/b/id/${id}-${size}.jpg`
 
-function cleanCover(url) {
-  if (!url) return ''
-  return url.replace('http://', 'https://').replace('&edge=curl', '').replace('zoom=1', 'zoom=2')
-}
-
-function extractBook(item) {
-  const info = item.volumeInfo || {}
+function extractBook(doc) {
   return {
-    title: info.title || '',
-    author: (info.authors || []).join(', '),
-    category: (info.categories || [''])[0].split('/')[0].trim(),
-    synopsis: info.description || '',
-    cover_url: cleanCover(info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || ''),
-    pages: info.pageCount || 0,
+    title:     doc.title || '',
+    author:    (doc.author_name || []).join(', '),
+    category:  (doc.subject || [''])[0]?.split('--')[0].trim() || '',
+    synopsis:  '',
+    cover_url: doc.cover_i ? OL_COVER(doc.cover_i, 'L') : '',
+    pages:     doc.number_of_pages_median || 0,
   }
 }
 
@@ -50,15 +45,12 @@ export default function BookForm({ book, userId, onClose, onSave }) {
     setCoverResults([])
     try {
       const q = encodeURIComponent(`${form.title} ${form.author}`.trim())
-      const res = await fetch(`${GOOGLE_BOOKS_URL}?q=${q}&maxResults=12`)
+      const res = await fetch(`${OL_SEARCH}?q=${q}&limit=15&fields=cover_i`)
       const data = await res.json()
-      const covers = (data.items || [])
-        .map(item => {
-          const links = item.volumeInfo?.imageLinks || {}
-          return cleanCover(links.thumbnail || links.smallThumbnail || '')
-        })
-        .filter(Boolean)
-        .filter((url, i, arr) => arr.indexOf(url) === i) // dedup
+      const covers = (data.docs || [])
+        .filter(d => d.cover_i)
+        .map(d => OL_COVER(d.cover_i, 'M'))
+        .filter((url, i, arr) => arr.indexOf(url) === i)
       setCoverResults(covers)
     } catch {}
     setSearchingCovers(false)
@@ -74,9 +66,9 @@ export default function BookForm({ book, userId, onClose, onSave }) {
     setResults([])
     try {
       const q = encodeURIComponent(query)
-      const res = await fetch(`${GOOGLE_BOOKS_URL}?q=${q}&maxResults=20`)
+      const res = await fetch(`${OL_SEARCH}?q=${q}&limit=20&fields=title,author_name,cover_i,number_of_pages_median,subject`)
       const data = await res.json()
-      setResults((data.items || []).map(extractBook).filter(b => b.title))
+      setResults((data.docs || []).map(extractBook).filter(b => b.title))
     } catch {
       alert('Error buscando libros')
     }

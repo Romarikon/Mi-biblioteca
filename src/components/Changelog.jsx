@@ -1,6 +1,13 @@
-export const APP_VERSION = '2.0'
+export const APP_VERSION = '2.1'
 
 const RELEASES = [
+  {
+    version: '2.1',
+    date: 'Abril 2025',
+    changes: [
+      'Al marcar un libro como leído, el progreso se pone automáticamente al 100%',
+    ],
+  },
   {
     version: '2.0',
     date: 'Abril 2025',

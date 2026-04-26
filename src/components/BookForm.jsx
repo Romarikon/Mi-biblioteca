@@ -110,10 +110,12 @@ export default function BookForm({ book, userId, onClose, onSave }) {
       const fields = { ...form }
       if (fields.status === 'read' && !book.finished_at) fields.finished_at = now
       if (fields.status !== 'read') fields.finished_at = null
+      if (fields.status === 'read' && fields.pages > 0) fields.current_page = fields.pages
       await supabase.from('books').update(fields).eq('id', book.id)
     } else {
       const payload = { ...form, user_id: userId }
       if (payload.status === 'read') payload.finished_at = now
+      if (payload.status === 'read' && payload.pages > 0) payload.current_page = payload.pages
       await supabase.from('books').insert(payload)
     }
     setSaving(false)

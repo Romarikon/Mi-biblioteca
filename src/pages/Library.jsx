@@ -154,8 +154,13 @@ export default function Library({ session, onOpenBook }) {
 
   async function updateStatus(id, status) {
     const finished_at = status === 'read' ? new Date().toISOString() : null
-    await supabase.from('books').update({ status, finished_at }).eq('id', id)
-    setBooks(prev => prev.map(b => b.id === id ? { ...b, status, finished_at } : b))
+    const fields = { status, finished_at }
+    if (status === 'read') {
+      const book = books.find(b => b.id === id)
+      if (book?.pages > 0) fields.current_page = book.pages
+    }
+    await supabase.from('books').update(fields).eq('id', id)
+    setBooks(prev => prev.map(b => b.id === id ? { ...b, ...fields } : b))
   }
 
   async function updateRating(id, rating) {

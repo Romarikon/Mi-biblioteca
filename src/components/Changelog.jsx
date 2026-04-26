@@ -1,6 +1,14 @@
-export const APP_VERSION = '1.7'
+export const APP_VERSION = '1.8'
 
 const RELEASES = [
+  {
+    version: '1.8',
+    date: 'Abril 2025',
+    changes: [
+      'Botón de borrar siempre visible en iPhone y móvil',
+      'Layout de acciones de tarjeta mejorado — estado a la izquierda, borrar a la derecha',
+    ],
+  },
   {
     version: '1.7',
     date: 'Abril 2025',

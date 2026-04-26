@@ -303,7 +303,10 @@ body {
 [data-theme="dark"] .lent-badge { background: #2a1800; border-color: #5c3010; color: #fb923c; }
 
 /* Card actions */
-.book-actions { display: flex; gap: 0.3rem; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+.book-actions {
+  display: flex; align-items: center; margin-top: 5px;
+  justify-content: space-between;
+}
 .btn-status-card {
   font-size: 0.72rem; font-weight: 600;
   border: 1px solid transparent; border-radius: var(--r-xs);
@@ -319,7 +322,7 @@ body {
 .btn-icon {
   background: none; border: none; cursor: pointer;
   font-size: 0.9rem; padding: 4px 6px; border-radius: 6px;
-  opacity: 0.4; transition: opacity var(--trans), background var(--trans);
+  opacity: 0.65; transition: opacity var(--trans), background var(--trans);
 }
 .btn-icon:hover { opacity: 1; background: var(--bg-alt); }
 .btn-icon.danger:hover { background: #fef2f2; opacity: 1; }

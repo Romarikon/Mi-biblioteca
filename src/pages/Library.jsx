@@ -121,11 +121,11 @@ export default function Library({ session, onOpenBook }) {
   const [sortRead, setSortRead] = useState('default')     // 'default' | 'alpha' | 'date'
 
   const currentYear = new Date().getFullYear()
-  const booksReadThisYear = books.filter(b => {
-    if (b.status !== 'read') return false
-    if (!b.finished_at) return true
-    return new Date(b.finished_at).getFullYear() === currentYear
-  }).length
+  const booksReadThisYear = books.filter(b =>
+    b.status === 'read' &&
+    b.finished_at &&
+    new Date(b.finished_at).getFullYear() === currentYear
+  ).length
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } })

@@ -320,7 +320,15 @@ export default function BookDetail({ book: initialBook, session, onBack, onBookU
             {STATUS_LABEL[book.status]}
           </span>
           <button className="btn-edit-detail" onClick={() => setShowEdit(true)}>
-            Editar libro
+            Editar
+          </button>
+          <button className="btn-delete-detail" onClick={async () => {
+            if (confirm(`¿Borrar "${book.title}"?`)) {
+              await supabase.from('books').delete().eq('id', book.id)
+              onBack()
+            }
+          }}>
+            🗑 Borrar
           </button>
         </div>
       </div>
@@ -404,13 +412,23 @@ export default function BookDetail({ book: initialBook, session, onBack, onBookU
           </div>
 
           {/* Dates */}
-          {(book.started_at || book.finished_at) && (
+          {(book.started_at || book.finished_at || book.status === 'read') && (
             <div className="detail-dates">
               {book.started_at && (
                 <span className="date-chip">📅 {formatDate(book.started_at)}</span>
               )}
-              {book.finished_at && (
-                <span className="date-chip">✅ {formatDate(book.finished_at)}</span>
+              {book.status === 'read' ? (
+                <div className="finished-date-row">
+                  <span className="finished-date-label">✅ Terminado:</span>
+                  <input
+                    type="date"
+                    className="finished-date-input"
+                    value={book.finished_at ? book.finished_at.split('T')[0] : ''}
+                    onChange={e => updateBook({ finished_at: e.target.value || null })}
+                  />
+                </div>
+              ) : (
+                book.finished_at && <span className="date-chip">✅ {formatDate(book.finished_at)}</span>
               )}
               {book.started_at && book.finished_at && (
                 <span className="date-chip">⏱ {daysBetween(book.started_at, book.finished_at)} días</span>

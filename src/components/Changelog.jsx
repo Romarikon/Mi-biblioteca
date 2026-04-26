@@ -1,6 +1,22 @@
-export const APP_VERSION = '1.8'
+export const APP_VERSION = '2.0'
 
 const RELEASES = [
+  {
+    version: '2.0',
+    date: 'Abril 2025',
+    changes: [
+      'Fecha de finalización editable directamente en la ficha del libro',
+      'Reto lector corregido — solo cuenta libros con fecha de este año',
+    ],
+  },
+  {
+    version: '1.9',
+    date: 'Abril 2025',
+    changes: [
+      'Botón borrar en la página de detalle del libro — visible en rojo en modo claro y oscuro',
+      'Botón borrar en tarjeta con color rojo claro, visible en ambos modos',
+    ],
+  },
   {
     version: '1.8',
     date: 'Abril 2025',

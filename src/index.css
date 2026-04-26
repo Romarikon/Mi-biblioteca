@@ -1164,6 +1164,31 @@ body {
 
 
 /* ══════════════════════════════════════════
+   SORT BAR
+══════════════════════════════════════════ */
+.sort-bar {
+  display: flex; align-items: center; gap: 0.4rem;
+  margin-bottom: 0.75rem; flex-wrap: wrap;
+}
+.sort-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-light); margin-right: 0.15rem;
+}
+.sort-btn {
+  font-size: 0.74rem; font-weight: 600; font-family: inherit;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 0.22rem 0.75rem;
+  color: var(--text-muted); cursor: pointer;
+  transition: all var(--trans);
+}
+.sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sort-btn.active {
+  background: var(--accent-soft); border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+/* ══════════════════════════════════════════
    ONBOARDING TOUR
 ══════════════════════════════════════════ */
 .tour-overlay {

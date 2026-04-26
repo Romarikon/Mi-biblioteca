@@ -115,6 +115,8 @@ export default function Library({ session, onOpenBook }) {
   const [activeBook, setActiveBook] = useState(null)
   const [dark, setDark] = useDarkMode()
   const [showTour, setShowTour] = useState(() => !localStorage.getItem('tour_done'))
+  const [sortOthers, setSortOthers] = useState('default') // 'default' | 'alpha'
+  const [sortRead, setSortRead] = useState('default')     // 'default' | 'alpha' | 'date'
 
   const currentYear = new Date().getFullYear()
   const booksReadThisYear = books.filter(b => {
@@ -183,9 +185,19 @@ export default function Library({ session, onOpenBook }) {
     b.author.toLowerCase().includes(search.toLowerCase())
   )
 
-  const want = filtered.filter(b => b.status === 'want')
-  const have = filtered.filter(b => b.status === 'have')
-  const read = filtered.filter(b => b.status === 'read')
+  function applySort(arr, sort) {
+    if (sort === 'alpha') return [...arr].sort((a, b) => a.title.localeCompare(b.title))
+    if (sort === 'date')  return [...arr].sort((a, b) => {
+      if (!a.finished_at) return 1
+      if (!b.finished_at) return -1
+      return new Date(b.finished_at) - new Date(a.finished_at)
+    })
+    return arr
+  }
+
+  const want = applySort(filtered.filter(b => b.status === 'want'), sortOthers)
+  const have = applySort(filtered.filter(b => b.status === 'have'), sortOthers)
+  const read = applySort(filtered.filter(b => b.status === 'read'), sortRead)
 
   const cardProps = (b) => ({
     onStatusChange: updateStatus,
@@ -230,6 +242,12 @@ export default function Library({ session, onOpenBook }) {
         <DailyQuote />
         <StatsBar books={books} />
 
+        <div className="sort-bar">
+          <span className="sort-label">Ordenar:</span>
+          <button className={`sort-btn ${sortOthers === 'default' ? 'active' : ''}`} onClick={() => setSortOthers('default')}>Reciente</button>
+          <button className={`sort-btn ${sortOthers === 'alpha'   ? 'active' : ''}`} onClick={() => setSortOthers('alpha')}>A–Z</button>
+        </div>
+
         <div className="columns">
           <DroppableZone
             id="want"
@@ -261,6 +279,13 @@ export default function Library({ session, onOpenBook }) {
             postitMap={postitMap}
             quoteMap={quoteMap}
           />
+        </div>
+
+        <div className="sort-bar">
+          <span className="sort-label">Leídos:</span>
+          <button className={`sort-btn ${sortRead === 'default' ? 'active' : ''}`} onClick={() => setSortRead('default')}>Reciente</button>
+          <button className={`sort-btn ${sortRead === 'alpha'   ? 'active' : ''}`} onClick={() => setSortRead('alpha')}>A–Z</button>
+          <button className={`sort-btn ${sortRead === 'date'    ? 'active' : ''}`} onClick={() => setSortRead('date')}>Fecha lectura</button>
         </div>
 
         <DroppableReadZone

@@ -117,10 +117,11 @@ export default function Library({ session, onOpenBook }) {
   const [showTour, setShowTour] = useState(() => !localStorage.getItem('tour_done'))
 
   const currentYear = new Date().getFullYear()
-  const booksReadThisYear = books.filter(b =>
-    b.status === 'read' && b.finished_at &&
-    new Date(b.finished_at).getFullYear() === currentYear
-  ).length
+  const booksReadThisYear = books.filter(b => {
+    if (b.status !== 'read') return false
+    if (!b.finished_at) return true
+    return new Date(b.finished_at).getFullYear() === currentYear
+  }).length
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } })

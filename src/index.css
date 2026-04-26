@@ -526,6 +526,15 @@ body {
 .btn-cover-search:hover { background: var(--accent); color: white; transform: translateY(-1px); }
 .btn-cover-search:disabled { opacity: 0.45; cursor: default; transform: none; }
 
+.cover-url-input {
+  width: 88px; font-size: 0.65rem; font-family: inherit;
+  border: 1px solid var(--border); border-radius: var(--r-xs);
+  padding: 0.28rem 0.4rem; background: var(--surface-2); color: var(--text);
+  margin-top: 0.25rem;
+}
+.cover-url-input::placeholder { color: var(--text-muted); }
+.cover-url-input:focus { outline: none; border-color: var(--accent); }
+
 .cover-picker {
   position: absolute; left: 0; top: 100%;
   display: grid; grid-template-columns: repeat(3, 56px);

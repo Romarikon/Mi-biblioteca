@@ -1,6 +1,13 @@
-export const APP_VERSION = '2.1'
+export const APP_VERSION = '2.2'
 
 const RELEASES = [
+  {
+    version: '2.2',
+    date: 'Abril 2025',
+    changes: [
+      'Portada por URL y buscador visual disponibles a la vez en el formulario',
+    ],
+  },
   {
     version: '2.1',
     date: 'Abril 2025',

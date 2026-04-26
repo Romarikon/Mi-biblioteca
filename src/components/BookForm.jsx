@@ -191,8 +191,16 @@ export default function BookForm({ book, userId, onClose, onSave }) {
                 disabled={searchingCovers || !form.title}
                 title="Buscar portada automáticamente"
               >
-                {searchingCovers ? '...' : '🔍 Portada'}
+                {searchingCovers ? '...' : '🔍 Buscar'}
               </button>
+
+              <input
+                type="url"
+                className="cover-url-input"
+                placeholder="O pega una URL..."
+                value={form.cover_url}
+                onChange={e => { set('cover_url', e.target.value); setCoverResults([]) }}
+              />
 
               {coverResults.length > 0 && (
                 <div className="cover-picker">
